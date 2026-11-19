@@ -1,15 +1,26 @@
 class Solution {
 public:
-    int maxArea(vector<int>& height) {
-        int l=0,r=height.size()-1,maxwater=0,ht=0,w=0;
-        while(l<r)
-        {
-            w=r-l;
-            ht=min(height[l],height[r]);
-           int currwater=w*ht;
-            maxwater=max(maxwater,currwater);
-            height[l] < height[r] ? l++:r--;
+    int maxArea(const std::vector<int>& height) {
+        // Use two pointers starting at both ends of the array.
+        // Move the pointer pointing to the shorter line inward,
+        // because the area is limited by the shorter height.
+        size_t left = 0;
+        size_t right = height.size() - 1;
+        int maxArea = 0;
+
+        while (left < right) {
+            int currentHeight = std::min(height[left], height[right]);
+            int currentWidth = static_cast<int>(right - left);
+            int currentArea = currentHeight * currentWidth;
+            maxArea = std::max(maxArea, currentArea);
+
+            // Move the pointer at the shorter line inward to try a larger height.
+            if (height[left] < height[right]) {
+                ++left;
+            } else {
+                --right;
+            }
         }
-        return maxwater;
+        return maxArea;
     }
 };
